@@ -51,6 +51,7 @@ class PriceFinder {
       tokenA_address: tokenA.address.mainnet,
       tokenB_name: tokenB.symbol,
       tokenB_address: tokenB.address.mainnet,
+      price: res[1],
       price_str: price_str,
       price_float: price_float,
     };
@@ -177,6 +178,123 @@ class PriceFinder {
             baseToken,
             token,
             amount,
+            filtered
+          );
+
+          if (tokenPairPrices) {
+            if (tokenPairPrices.length > 0) {
+              console.log(
+                `\n---------------------${baseToken}-${token}---------------------\n`,
+                tokenPairPrices
+              );
+
+              return tokenPairPrices;
+            }
+          }
+
+          return undefined;
+        } catch (error) {
+          return undefined;
+        }
+      });
+
+      const tokenPrices = await Promise.all(promises);
+      resolve(tokenPrices);
+    });
+  }
+
+  static async getBuySellTokenPairPriceInExchanges(
+    baseExchange,
+    tokenA,
+    tokenB,
+    amount = '1000000000000000000',
+    slippage = 5,
+    filtered = true
+  ) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const tokenPairPriceBase = await this.getPrice(
+          baseExchange,
+          tokens[tokenA],
+          tokens[tokenB],
+          amount
+        );
+
+        const amountEth = web3.utils.fromWei(amount, 'Ether');
+        const min_amount = (Number((amountEth * slippage) / 1000)) + Number(amountEth);
+
+        const promises = Object.keys(exchanges).map(async (exchange) => {
+          if (
+            exchanges[exchange].name === baseExchange.name ||
+            !pairs[tokenA][exchanges[exchange].name].has(
+              `${exchanges[exchange].name}-${tokens[tokenA].symbol}-${tokens[tokenB].symbol}`
+            )
+          ) {
+            return;
+          }
+
+          try {
+            const tokenPairPrice = await this.getPrice(
+              exchanges[exchange],
+              tokens[tokenB],
+              tokens[tokenA],
+              tokenPairPriceBase.price            
+            );
+            return tokenPairPrice
+              ? {
+                  ...tokenPairPrice,
+                  mainPrice: tokenPairPriceBase.price_str,
+                  minMainPrice: min_amount,
+                }
+              : undefined;
+          } catch (error) {
+            console.log(error)
+            return undefined;
+          }
+        });
+
+        const tokenPairPrices = await Promise.all(promises);
+        const tokenPairPricesFiltered = tokenPairPrices.filter(
+          (tokenPairPrice) =>
+            tokenPairPrice !== undefined && tokenPairPrice.price_float > min_amount
+        );
+
+        resolve(
+          filtered
+            ? tokenPairPricesFiltered
+            : tokenPairPrices.filter((tokenPairPrice) => tokenPairPrice !== undefined)
+        );
+      } catch (error) {
+        reject([]);
+      }
+    });
+  }
+
+  static async getAllBuySellTokenPricesInExchanges(
+    baseExchange,
+    baseToken,
+    amount = '1000000000000000000',
+    slippage = 5,
+    filtered = true
+  ) {
+    return new Promise(async (resolve, reject) => {
+      const promises = Object.keys(tokens).map(async (token) => {
+        if (
+          token === baseToken ||
+          !pairs[baseToken][baseExchange.name].has(
+            `${baseExchange.name}-${tokens[baseToken].symbol}-${tokens[token].symbol}`
+          )
+        ) {
+          return;
+        }
+
+        try {
+          const tokenPairPrices = await this.getBuySellTokenPairPriceInExchanges(
+            baseExchange,
+            baseToken,
+            token,
+            amount,
+            slippage,
             filtered
           );
 

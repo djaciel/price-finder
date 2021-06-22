@@ -69,11 +69,29 @@ const pairs = require('./mainnet/pairs/pairs');
 
 // prueba4();
 
-async function prueba5() {
+// async function prueba5() {
+//   const promises = Object.keys(pairs).map(async (pair) => {
+//     try {
+//       const pricePair = await PriceFinder.getAllTokenPricesInExchanges(
+//         exchanges.PANCAKESWAP, pair, '10000000000000000000', true);
+
+//       return pricePair;
+//     } catch (error) {
+//       return undefined;
+//     }
+//   });
+
+//   const tokenPrices = await Promise.all(promises);
+// }
+
+// prueba5();
+
+
+async function prueba6() {
   const promises = Object.keys(pairs).map(async (pair) => {
     try {
-      const pricePair = await PriceFinder.getAllTokenPricesInExchanges(
-        exchanges.PANCAKESWAP, pair, '10000000000000000000', true);
+      const pricePair = await PriceFinder.getAllBuySellTokenPricesInExchanges(
+        exchanges.PANCAKESWAP, pair, '1' + '000000000000000000', 1, false);
 
       return pricePair;
     } catch (error) {
@@ -84,4 +102,5 @@ async function prueba5() {
   const tokenPrices = await Promise.all(promises);
 }
 
-prueba5();
+prueba6();
+
