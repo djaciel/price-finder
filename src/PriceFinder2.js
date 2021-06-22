@@ -73,7 +73,6 @@ class PriceFinder {
                 const price_float2 = this.getFloat(price_str2.toString(), 18);
 
                 resolve({
-                  router_name: router.name,
                   router_address: router.address,
                   tokenA_name: tokenA.symbol,
                   tokenA_address: tokenA.address.mainnet,
@@ -88,16 +87,7 @@ class PriceFinder {
                 reject(error);
               });
           } else {
-            resolve({
-              router_name: router.name,
-              router_address: router.address,
-              tokenA_name: tokenA.symbol,
-              tokenA_address: tokenA.address.mainnet,
-              tokenB_name: tokenB.symbol,
-              tokenB_address: tokenB.address.mainnet,
-              price_str: price_str,
-              price_float: price_float,
-            });
+            console.log("hola")
           }
         })
         .catch((error) => {
@@ -109,6 +99,7 @@ class PriceFinder {
   static getFloat(str, val) {
     str = str.toString();
     str = str.slice(0, str.indexOf('.') + val + 1);
+    console.log(str);
     return Number(str);
   }
 }
