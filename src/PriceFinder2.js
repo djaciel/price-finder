@@ -87,7 +87,6 @@ class PriceFinder {
                 reject(error);
               });
           } else {
-            console.log("hola")
           }
         })
         .catch((error) => {
@@ -99,7 +98,6 @@ class PriceFinder {
   static getFloat(str, val) {
     str = str.toString();
     str = str.slice(0, str.indexOf('.') + val + 1);
-    console.log(str);
     return Number(str);
   }
 }
