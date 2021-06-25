@@ -69,11 +69,13 @@ const pairs = require('./mainnet/pairs/pairs');
 
 // prueba4();
 
+//const amount = '1' + '000000000000000000';
+// const amount = '100' + '000000000000000';
+
 // async function prueba5() {
 //   const promises = Object.keys(pairs).map(async (pair) => {
 //     try {
-//       const pricePair = await PriceFinder.getAllTokenPricesInExchanges(
-//         exchanges.PANCAKESWAP, pair, '10000000000000000000', true);
+//       const pricePair = await PriceFinder.getAllTokenPricesInExchanges(exchanges.APESWAP, pair, amount, true);
 
 //       return pricePair;
 //     } catch (error) {
@@ -86,12 +88,19 @@ const pairs = require('./mainnet/pairs/pairs');
 
 // prueba5();
 
+//const amount = '1' + '000000000000000000';
+const amount = '10000' + '000000000000000';
 
 async function prueba6() {
   const promises = Object.keys(pairs).map(async (pair) => {
     try {
       const pricePair = await PriceFinder.getAllBuySellTokenPricesInExchanges(
-        exchanges.PANCAKESWAP, pair, '1' + '000000000000000000', 1, false);
+        exchanges.PANCAKESWAP,
+        pair,
+        amount,
+        5,
+        true
+      );
 
       return pricePair;
     } catch (error) {
@@ -103,4 +112,3 @@ async function prueba6() {
 }
 
 prueba6();
-

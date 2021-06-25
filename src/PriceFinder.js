@@ -213,15 +213,10 @@ class PriceFinder {
   ) {
     return new Promise(async (resolve, reject) => {
       try {
-        const tokenPairPriceBase = await this.getPrice(
-          baseExchange,
-          tokens[tokenA],
-          tokens[tokenB],
-          amount
-        );
+        const tokenPairPriceBase = await this.getPrice(baseExchange, tokens[tokenA], tokens[tokenB], amount);
 
         const amountEth = web3.utils.fromWei(amount, 'Ether');
-        const min_amount = (Number((amountEth * slippage) / 1000)) + Number(amountEth);
+        const min_amount = Number((amountEth * slippage) / 1000) + Number(amountEth);
 
         const promises = Object.keys(exchanges).map(async (exchange) => {
           if (
@@ -238,7 +233,7 @@ class PriceFinder {
               exchanges[exchange],
               tokens[tokenB],
               tokens[tokenA],
-              tokenPairPriceBase.price            
+              tokenPairPriceBase.price
             );
             return tokenPairPrice
               ? {
@@ -248,15 +243,13 @@ class PriceFinder {
                 }
               : undefined;
           } catch (error) {
-            console.log(error)
-            return undefined;
+            return;
           }
         });
 
         const tokenPairPrices = await Promise.all(promises);
         const tokenPairPricesFiltered = tokenPairPrices.filter(
-          (tokenPairPrice) =>
-            tokenPairPrice !== undefined && tokenPairPrice.price_float > min_amount
+          (tokenPairPrice) => tokenPairPrice !== undefined && tokenPairPrice.price_float > min_amount
         );
 
         resolve(
