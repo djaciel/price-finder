@@ -70,35 +70,16 @@ const pairs = require('./mainnet/pairs/pairs');
 // prueba4();
 
 //const amount = '1' + '000000000000000000';
-// const amount = '100' + '000000000000000';
+const amount = '100' + '000000000000000';
 
-// async function prueba5() {
-//   const promises = Object.keys(pairs).map(async (pair) => {
-//     try {
-//       const pricePair = await PriceFinder.getAllTokenPricesInExchanges(exchanges.APESWAP, pair, amount, true);
-
-//       return pricePair;
-//     } catch (error) {
-//       return undefined;
-//     }
-//   });
-
-//   const tokenPrices = await Promise.all(promises);
-// }
-
-// prueba5();
-
-//const amount = '1' + '000000000000000000';
-const amount = '10000' + '000000000000000';
-
-async function prueba6() {
+async function prueba5() {
   const promises = Object.keys(pairs).map(async (pair) => {
     try {
-      const pricePair = await PriceFinder.getAllBuySellTokenPricesInExchanges(
+      const pricePair = await PriceFinder.getAllTokenPricesInExchanges(
         exchanges.PANCAKESWAP,
         pair,
         amount,
-        5,
+        1,
         true
       );
 
@@ -111,4 +92,29 @@ async function prueba6() {
   const tokenPrices = await Promise.all(promises);
 }
 
-prueba6();
+prueba5();
+
+//const amount = '1' + '000000000000000000';
+// const amount = '1000' + '000000000000000';
+
+// async function prueba6() {
+//   const promises = Object.keys(pairs).map(async (pair) => {
+//     try {
+//       const pricePair = await PriceFinder.getAllBuySellTokenPricesInExchanges(
+//         exchanges.PANCAKESWAP,
+//         pair,
+//         amount,
+//         5,
+//         true
+//       );
+
+//       return pricePair;
+//     } catch (error) {
+//       return undefined;
+//     }
+//   });
+
+//   const tokenPrices = await Promise.all(promises);
+// }
+
+// prueba6();

@@ -97,17 +97,24 @@ class PriceFinder {
     tokenA,
     tokenB,
     amount = '1000000000000000000',
+    slippage = 5,
     filtered = true
   ) {
     return new Promise(async (resolve, reject) => {
       try {
-        const tokenPairPriceBase = await this.getPrice(
+        let tokenPairPriceBase = await this.getPrice(
           baseExchange,
           tokens[tokenA],
           tokens[tokenB],
           amount,
           true
         );
+
+        tokenPairPriceBase = {
+          ...tokenPairPriceBase,
+          min_price:
+            Number((tokenPairPriceBase.min_price * slippage) / 1000) + Number(tokenPairPriceBase.min_price),
+        };
 
         const promises = Object.keys(exchanges).map(async (exchange) => {
           if (
@@ -159,6 +166,7 @@ class PriceFinder {
     baseExchange,
     baseToken,
     amount = '1000000000000000000',
+    slippage = 5,
     filtered = true
   ) {
     return new Promise(async (resolve, reject) => {
@@ -178,6 +186,7 @@ class PriceFinder {
             baseToken,
             token,
             amount,
+            slippage,
             filtered
           );
 
