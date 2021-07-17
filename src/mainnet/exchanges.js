@@ -14,8 +14,8 @@ const exchanges = {
   }),
   APESWAP: Utils.createContract({
     name: 'APESWAP',
-    router: '0xC0788A3aD43d79aa53B09c2EaCc313A787d1d607',
-    factory: '0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6',
+    router: '0xcF0feBd3f17CEf5b47b0cD257aCf6025c5BFf3b7',
+    factory: '0x0841bd0b734e4f5853f0dd8d7ea041c241fb0da6',
     abi: APESWAP_ABI,
   }),
   JULSWAP: Utils.createContract({

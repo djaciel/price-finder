@@ -1,7 +1,7 @@
 const PriceFinder = require('./PriceFinder');
-const tokens = require('./mainnet/tokens');
-const exchanges = require('./mainnet/exchanges');
-const pairs = require('./mainnet/pairs/pairs');
+const tokens = require('./testnet/tokens');
+const exchanges = require('./testnet/exchanges');
+const pairs = require('./testnet/pairs/pairs');
 
 // async function prueba() {
 //   let price = await PriceFinder.getPrice(
